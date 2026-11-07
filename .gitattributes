@@ -1,0 +1,3 @@
+# Statistiche dei linguaggi su GitHub: conta l'SQL, non la dashboard HTML
+*.sql linguist-detectable=true
+dashboard/*.html linguist-detectable=false
