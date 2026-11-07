@@ -1,0 +1,321 @@
+<title>Arzignano è in crisi?</title>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: una domanda in testa, poi un riquadro per ogni prova, dalla più generale alla più specifica.
+   Colore: il blu grigio del wet-blue (la pelle dopo la concia al cromo) contro il marrone del cuoio. */
+:root {
+  --bg: #f6f8f8; --surface: #ffffff; --ink: #14232b; --ink-2: #44565f; --muted: #66767f;
+  --grid: #dfe6e8; --axis: #b9c5ca; --border: rgba(20,35,43,.12);
+  --pelle: #b4531c; --blue: #0b7cab; --pelle-2: #d98a2b; --indigo: #6d6fc0; --slate: #6d7f8c;
+  --display: "Barlow Condensed", "Arial Narrow", "Segoe UI", sans-serif;
+  --body: "Barlow", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  color-scheme: dark;
+  --bg: #121a1f; --surface: #1a252b; --ink: #eef3f4; --ink-2: #c0ccd1; --muted: #93a3ab;
+  --grid: #2a373e; --axis: #41525b; --border: rgba(255,255,255,.12);
+  --pelle: #d4692a; --blue: #2f93c4; --pelle-2: #bd851a; --indigo: #8385d6; --slate: #93a6b3;
+} }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121a1f; --surface: #1a252b; --ink: #eef3f4; --ink-2: #c0ccd1; --muted: #93a3ab;
+  --grid: #2a373e; --axis: #41525b; --border: rgba(255,255,255,.12);
+  --pelle: #d4692a; --blue: #2f93c4; --pelle-2: #bd851a; --indigo: #8385d6; --slate: #93a6b3;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 16px/1.5 var(--body); margin: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 40px 48px; display: grid; gap: 24px; }
+header { display: grid; gap: 10px; }
+.eyebrow { font: 600 13px/1.3 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--blue); margin: 0; }
+h1 { font: 700 clamp(36px, 6vw, 60px)/1.02 var(--display); margin: 0; text-wrap: balance; max-width: 20ch; }
+.lede { font-size: 19px; line-height: 1.45; color: var(--ink-2); margin: 0; max-width: 62ch; }
+.lede strong { color: var(--ink); font-weight: 600; }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; display: grid; gap: 2px; align-content: start; }
+.tile b { font: 700 44px/1 var(--display); }
+.tile.pelle b { color: var(--pelle); }
+.tile span { font-size: 14px; line-height: 1.3; color: var(--ink-2); }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 18px 20px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.panel.full { grid-column: 1 / -1; }
+h2 { font: 600 25px/1.12 var(--display); margin: 0; text-wrap: balance; }
+.sub { font-size: 14px; line-height: 1.4; color: var(--ink-2); margin: 0; max-width: 72ch; }
+.chart { position: relative; width: 100%; min-width: 0; }
+.chart svg { display: block; width: 100%; overflow: visible; }
+.tick { font: 400 12px var(--body); fill: var(--muted); font-variant-numeric: tabular-nums; }
+.lab { font: 600 13px var(--body); fill: var(--ink); }
+.lab2 { font: 400 12px var(--body); fill: var(--ink-2); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--ink-2); }
+.legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); font-size: 13px; line-height: 1.35; padding: 6px 9px; border-radius: 4px; white-space: nowrap; z-index: 2; transform: translate(-50%, -100%); font-variant-numeric: tabular-nums; }
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pair h3 { font: 600 14px/1.3 var(--body); margin: 0 0 4px; color: var(--ink-2); }
+.bridge { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; border-top: 1px solid var(--grid); padding-top: 10px; }
+.bridge div { display: grid; gap: 1px; }
+.bridge b { font: 700 28px/1.05 var(--display); }
+.bridge span { font-size: 13px; line-height: 1.3; color: var(--ink-2); }
+.notes { display: grid; gap: 8px; color: var(--ink-2); font-size: 14px; }
+.notes h2 { color: var(--ink); }
+.notes ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; max-width: 80ch; }
+details { font-size: 14px; }
+summary { cursor: pointer; font-weight: 600; color: var(--blue); }
+summary:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.tablewrap { overflow-x: auto; margin-top: 8px; max-height: 420px; overflow-y: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+th, td { padding: 4px 10px; text-align: right; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+th { color: var(--ink-2); font-weight: 600; position: sticky; top: 0; background: var(--surface); }
+th:first-child, td:first-child { text-align: left; }
+footer { font-size: 13px; color: var(--muted); }
+.cardfoot { display: none; }
+@media (max-width: 760px) {
+  .grid, .pair { grid-template-columns: minmax(0, 1fr); }
+  .tiles, .bridge { grid-template-columns: minmax(0, 1fr); }
+  .wrap { padding-block: 24px 32px; }
+}
+/* Versione immagine per LinkedIn, 1080 x 1350 */
+body.card { width: 1080px; height: 1350px; overflow: hidden; padding: 0; }
+body.card .wrap { max-width: none; padding: 40px 44px 28px; gap: 18px; height: 1350px; grid-template-rows: auto auto auto 1fr auto; }
+body.card h1 { font-size: 58px; max-width: none; }
+body.card .lede { font-size: 22px; max-width: none; }
+body.card .tile b { font-size: 58px; }
+body.card .tile span { font-size: 17px; }
+body.card h2 { font-size: 29px; }
+body.card .sub { font-size: 16px; max-width: none; }
+body.card .only-page { display: none; }
+body.card .cardfoot { display: block; font-size: 16px; color: var(--ink-2); }
+body.card .tick { font-size: 15px; }
+body.card .lab { font-size: 16px; }
+body.card .lab2 { font-size: 15px; }
+body.card .legend { font-size: 15px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Export della provincia di Vicenza · dati ISTAT 1991–2025</p>
+    <h1>Il distretto conciario di Arzignano è in crisi? L'ho chiesto ai dati</h1>
+    <p class="lede"><strong>Sull'export la risposta è sì:</strong> tre anni di calo di fila, mai successo dal 1991. Nel 2025 il settore è tornato ai valori del 2020, l'anno del Covid.</p>
+  </header>
+
+  <section class="tiles" aria-label="Variazioni dal 2022 al 2025">
+    <div class="tile pelle"><b>−15,3%</b><span>export di concia e pelletteria di Vicenza, 2022–2025</span></div>
+    <div class="tile"><b>−4,9%</b><span>tutto il manifatturiero vicentino, stesso periodo</span></div>
+    <div class="tile"><b>−16,6%</b><span>chili di cuoio conciato esportati dall'Italia, stesso periodo</span></div>
+  </section>
+
+  <section class="panel full">
+    <h2>Dal picco del 2022 l'export ha perso 384 milioni di euro</h2>
+    <p class="sub">Vicenza, concia e pelletteria (CB151), verso tutto il mondo. Milioni di euro correnti, non corretti per l'inflazione.</p>
+    <div class="chart" id="c-serie"></div>
+  </section>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>La pelle scende molto più del resto della manifattura</h2>
+      <p class="sub">Export in euro, indice 2022 = 100.</p>
+      <div class="legend" id="l-indice"></div>
+      <div class="chart" id="c-indice"></div>
+    </section>
+    <section class="panel">
+      <h2>Cina, Stati Uniti e Corea del Sud pesano per il 46% del calo netto</h2>
+      <p class="sub">Vicenza, variazione dell'export 2022–2025 in milioni di euro. I mercati con le perdite e i guadagni maggiori.</p>
+      <div class="chart" id="c-paesi"></div>
+    </section>
+  </div>
+
+  <section class="panel full only-page">
+    <h2>Si vende meno cuoio: il calo viene dai chili, il prezzo tiene</h2>
+    <p class="sub">Italia, solo concia (CB1511): ISTAT non pubblica i chili per le province. Il dato nazionale è quindi un'approssimazione del distretto.</p>
+    <div class="pair">
+      <div><h3>Migliaia di tonnellate esportate</h3><div class="chart" id="c-kg"></div></div>
+      <div><h3>Prezzo medio, euro al kg</h3><div class="chart" id="c-prezzo"></div></div>
+    </div>
+    <div class="bridge">
+      <div><b>−487 mln</b><span>effetto dei volumi, calcolato paese per paese</span></div>
+      <div><b>+37 mln</b><span>effetto dei prezzi, calcolato paese per paese</span></div>
+      <div><b>−448 mln</b><span>variazione totale del valore, 2022–2025</span></div>
+    </div>
+    <p class="sub">Il quadro dei prezzi è misto: salgono in 52 mercati e scendono in 58. La Cina da sola vale il 50% dei chili persi, ma compra cuoio a circa 2,50 €/kg e pesa molto meno sul valore. Il prezzo medio dipende anche dal tipo di prodotto.</p>
+  </section>
+
+  <section class="panel full only-page">
+    <h2>La trappola della quota: Vicenza perde peso anche per un settore che non è il suo</h2>
+    <p class="sub">La quota di Vicenza sull'export italiano è scesa dal 31,2% del 2002 al 17,7% del 2025. Nel frattempo la concia è passata dal 70% al 23% del settore nazionale, perché è esplosa la pelletteria. Dal 2022 la quota è quasi ferma (18,0% → 17,7%): il calo recente riguarda tutta Italia, dove il settore perde il 14,0%.</p>
+    <div class="legend" id="l-quote"></div>
+    <div class="chart" id="c-quote"></div>
+  </section>
+
+  <section class="notes only-page panel full">
+    <h2>Cosa questi dati non dicono</h2>
+    <ul>
+      <li>Misurano l'export. Non dicono nulla su produzione, occupazione, vendite in Italia o margini delle imprese.</li>
+      <li>Sono provinciali: Vicenza approssima il distretto della Valle del Chiampo ma non coincide con esso. Per le province ISTAT pubblica solo concia e pelletteria insieme.</li>
+      <li>I chili sono nazionali e riguardano la sola concia, mentre gli euro di Vicenza comprendono anche la pelletteria.</li>
+      <li>Gli euro sono correnti: al netto dell'inflazione il calo sarebbe più ampio. Il progetto non stima di quanto.</li>
+      <li>Il prezzo al kg dipende anche dal mix di prodotto. I dati dicono che cosa è cambiato, non perché: le cause del calo restano fuori da questa analisi.</li>
+    </ul>
+    <details>
+      <summary>Mostra tutti i valori in tabella</summary>
+      <div class="tablewrap"><table id="tab"></table></div>
+    </details>
+  </section>
+
+  <footer class="only-page">Fonte: ISTAT Coeweb, CPAteco 2007, dato annuale provinciale. Analisi in SQL su MySQL di Gianluca Verza.</footer>
+  <div class="cardfoot">Fonte: ISTAT Coeweb. Euro correnti. Dati provinciali, solo export. Analisi in SQL di Gianluca Verza.</div>
+</div>
+
+<script>
+const D = {"serie":[[1991,461.9],[1992,457],[1993,614.2],[1994,789.9],[1995,932.2],[1996,957.6],[1997,1053.2],[1998,1198.3],[1999,1224.7],[2000,1607],[2001,1773.2],[2002,1765.5],[2003,1537.7],[2004,1624.1],[2005,1464.1],[2006,1669.6],[2007,1700.7],[2008,1565.3],[2009,1229.1],[2010,1518.8],[2011,1734.9],[2012,1805.5],[2013,2022.4],[2014,2152.9],[2015,2313],[2016,2270.5],[2017,2378],[2018,2325.5],[2019,2452.6],[2020,2118.4],[2021,2286.6],[2022,2508.4],[2023,2307.7],[2024,2238.9],[2025,2124.7]],"indice":{"Italia, concia e pelletteria":[[2015,72.9],[2016,72.5],[2017,78.4],[2018,82.2],[2019,93.6],[2020,71.3],[2021,87],[2022,100],[2023,99.3],[2024,90.6],[2025,86]],"Italia, manifatturiero":[[2015,66.4],[2016,67.2],[2017,72.3],[2018,75],[2019,77.4],[2020,70.4],[2021,83.6],[2022,100],[2023,100.1],[2024,99.4],[2025,102.6]],"Vicenza, concia e pelletteria":[[2015,92.2],[2016,90.5],[2017,94.8],[2018,92.7],[2019,97.8],[2020,84.5],[2021,91.2],[2022,100],[2023,92],[2024,89.3],[2025,84.7]],"Vicenza, manifatturiero":[[2015,72.7],[2016,71.2],[2017,75.2],[2018,76.2],[2019,78.7],[2020,71.3],[2021,86.6],[2022,100],[2023,97.4],[2024,95.7],[2025,95.1]]},"concia":[[1991,1229.7,116.4,10.57],[1992,1294.9,109.9,11.79],[1993,1747.9,142.8,12.24],[1994,2261.9,176.4,12.83],[1995,2661.4,193.9,13.73],[1996,2854.3,225.1,12.68],[1997,2949.3,239,12.34],[1998,2909.8,242.3,12.01],[1999,2876.1,260.7,11.03],[2000,3949.1,311.2,12.69],[2001,4293.8,333.3,12.88],[2002,3976.3,323.4,12.3],[2003,3574,326.3,10.95],[2004,3479.9,344.2,10.11],[2005,3371.7,359.8,9.37],[2006,3758.1,394.3,9.53],[2007,3874.4,356,10.88],[2008,3422.8,330.4,10.36],[2009,2685.2,290.9,9.23],[2010,3385.7,331.7,10.21],[2011,3734.1,340.9,10.95],[2012,3725.4,311.9,11.94],[2013,4035.6,337.4,11.96],[2014,4103.8,334.5,12.27],[2015,4026.2,312.5,12.88],[2016,3823,308.3,12.4],[2017,3839.9,325.8,11.78],[2018,3669.7,296.9,12.36],[2019,3366.1,297.6,11.31],[2020,2498.7,245,10.2],[2021,2965.5,280.3,10.58],[2022,3160.1,257.2,12.28],[2023,2928.4,235.3,12.45],[2024,2811.6,229.3,12.26],[2025,2711.7,214.5,12.64]],"quote":[[1991,24.5,65.3],[1992,23,65.2],[1993,24,68.4],[1994,23.5,67.3],[1995,23,65.6],[1996,21.7,64.8],[1997,24.1,67.5],[1998,28.8,69.9],[1999,29.5,69.2],[2000,28.3,69.7],[2001,28.7,69.5],[2002,31.2,70.3],[2003,29,67.4],[2004,29.6,63.4],[2005,26.2,60.4],[2006,26.4,59.5],[2007,24.9,56.7],[2008,24.2,52.9],[2009,23.8,52],[2010,23.7,52.7],[2011,22.4,48.2],[2012,21.1,43.6],[2013,21.5,43],[2014,21.8,41.6],[2015,22.8,39.6],[2016,22.5,37.8],[2017,21.8,35.2],[2018,20.3,32],[2019,18.8,25.8],[2020,21.3,25.1],[2021,18.9,24.5],[2022,18,22.7],[2023,16.7,21.2],[2024,17.7,22.3],[2025,17.7,22.6]],"paesi":[{"name":"Cina","a":159.2,"b":81.3,"v":-77.9},{"name":"Stati Uniti","a":244.9,"b":187.8,"v":-57.1},{"name":"Corea del Sud","a":141.2,"b":99.4,"v":-41.8},{"name":"Regno Unito","a":98.7,"b":70.7,"v":-28},{"name":"Slovenia","a":36.6,"b":9.5,"v":-27.1},{"name":"Polonia","a":84.1,"b":58.9,"v":-25.3},{"name":"Portogallo","a":90.3,"b":66,"v":-24.4},{"name":"Rep. Ceca","a":35,"b":14.8,"v":-20.3},{"name":"Turchia","a":45.7,"b":60.4,"v":14.7},{"name":"Emirati Arabi","a":23.6,"b":38.3,"v":14.8},{"name":"Romania","a":84.2,"b":99.5,"v":15.3},{"name":"Francia","a":163.3,"b":180.5,"v":17.2},{"name":"Vietnam","a":95.3,"b":117.9,"v":22.6},{"name":"Spagna","a":107.2,"b":135.2,"v":28.1}]};
+const card = location.hash === '#card';
+if (card) { document.documentElement.setAttribute('data-theme', 'light'); document.body.classList.add('card'); }
+const fmt = (v, d = 0) => v.toLocaleString('it-IT', { minimumFractionDigits: d, maximumFractionDigits: d, useGrouping: 'always' });
+const sgn = (v, d = 0) => (v > 0 ? '+' : v < 0 ? '−' : '') + fmt(Math.abs(v), d);
+const NS = 'http://www.w3.org/2000/svg';
+const S = (tag, a = {}, txt) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; return e; };
+const niceTicks = (min, max, n) => {
+  const step0 = (max - min) / n, m = Math.pow(10, Math.floor(Math.log10(step0))), r = step0 / m;
+  const step = (r <= 1 ? 1 : r <= 2 ? 2 : r <= 2.5 ? 2.5 : r <= 5 ? 5 : 10) * m;
+  const out = []; for (let v = Math.ceil(min / step) * step; v <= max + 1e-9; v += step) out.push(+v.toFixed(6));
+  return out;
+};
+function tipFor(host) {
+  let t = host.querySelector('.tip');
+  if (!t) { t = document.createElement('div'); t.className = 'tip'; t.hidden = true; host.appendChild(t); }
+  return t;
+}
+function placeTip(t, host, x, y, html) {
+  t.innerHTML = html; t.hidden = false;
+  const hw = t.offsetWidth / 2, W = host.clientWidth;
+  t.style.left = Math.min(Math.max(x, hw), W - hw) + 'px';
+  t.style.top = Math.max(y - 8, t.offsetHeight) + 'px';
+}
+/* series: [{name, color, pts:[[x,y]], endLabel, segments}]  */
+function lineChart(id, series, o) {
+  const host = document.getElementById(id); if (!host) return;
+  host.querySelector('svg')?.remove();
+  const W = Math.max(host.clientWidth, 280), H = o.h, m = { t: 14, r: o.right ?? 16, b: 26, l: o.left ?? 44 };
+  const xs = series[0].pts.map(p => p[0]);
+  const ally = series.flatMap(s => s.pts.map(p => p[1]));
+  const y0 = o.ymin ?? Math.min(0, ...ally), y1 = o.ymax ?? Math.max(...ally);
+  const X = v => m.l + (v - xs[0]) / (xs[xs.length - 1] - xs[0]) * (W - m.l - m.r);
+  const Y = v => H - m.b - (v - y0) / (y1 - y0) * (H - m.t - m.b);
+  const svg = S('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': o.aria });
+  for (const v of niceTicks(y0, y1, o.nTicks ?? 4)) {
+    svg.append(S('line', { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), stroke: v === y0 ? 'var(--axis)' : 'var(--grid)', 'stroke-width': 1 }));
+    svg.append(S('text', { x: m.l - 8, y: Y(v) + 4, 'text-anchor': 'end', class: 'tick' }, fmt(v, o.tickDec ?? 0)));
+  }
+  for (const x of o.xTicks) svg.append(S('text', { x: X(x), y: H - 6, 'text-anchor': 'middle', class: 'tick' }, x));
+  for (const s of series) {
+    const seg = s.segments || [{ from: xs[0], to: xs[xs.length - 1], color: s.color, w: 2 }];
+    for (const g of seg) {
+      const d = s.pts.filter(p => p[0] >= g.from && p[0] <= g.to).map((p, i) => `${i ? 'L' : 'M'}${X(p[0]).toFixed(1)} ${Y(p[1]).toFixed(1)}`).join('');
+      svg.append(S('path', { d, fill: 'none', stroke: g.color, 'stroke-width': g.w ?? 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+    }
+  }
+  /* etichette finali, distanziate per non sovrapporsi */
+  const ends = series.filter(s => s.endLabel).map(s => { const p = s.pts[s.pts.length - 1]; return { s, x: X(p[0]), y: Y(p[1]), ly: Y(p[1]) + 4 }; }).sort((a, b) => a.ly - b.ly);
+  const gap = card ? 19 : 16;
+  for (let i = 1; i < ends.length; i++) if (ends[i].ly - ends[i - 1].ly < gap) ends[i].ly = ends[i - 1].ly + gap;
+  for (const e of ends) {
+    svg.append(S('circle', { cx: e.x, cy: e.y, r: 4, fill: e.s.color, stroke: 'var(--surface)', 'stroke-width': 2 }));
+    svg.append(S('text', { x: e.x + 9, y: e.ly, class: 'lab' }, e.s.endLabel));
+  }
+  for (const a of (o.notes || [])) {
+    const px = X(a.x), py = Y(a.y);
+    svg.append(S('circle', { cx: px, cy: py, r: 4, fill: a.color, stroke: 'var(--surface)', 'stroke-width': 2 }));
+    svg.append(S('text', { x: px + (a.dx ?? 0), y: py + (a.dy ?? -11), 'text-anchor': a.anchor ?? 'middle', class: 'lab' }, a.text));
+  }
+  /* crosshair */
+  const cross = S('line', { y1: m.t, y2: H - m.b, stroke: 'var(--axis)', 'stroke-width': 1, visibility: 'hidden' });
+  svg.append(cross);
+  const hit = S('rect', { x: m.l, y: 0, width: Math.max(W - m.l - m.r, 1), height: H, fill: 'transparent' });
+  svg.append(hit);
+  host.prepend(svg);
+  const t = tipFor(host);
+  hit.addEventListener('pointermove', ev => {
+    const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) * W / r.width;
+    const xv = xs.reduce((a, b) => Math.abs(X(b) - px) < Math.abs(X(a) - px) ? b : a);
+    cross.setAttribute('x1', X(xv)); cross.setAttribute('x2', X(xv)); cross.setAttribute('visibility', 'visible');
+    const lines = series.map(s => { const p = s.pts.find(q => q[0] === xv); return p ? (series.length > 1 ? s.name + ': ' : '') + fmt(p[1], o.dec ?? 0) + (o.unit ?? '') : ''; }).filter(Boolean);
+    placeTip(t, host, X(xv) * r.width / W, Y(Math.max(...series.map(s => (s.pts.find(q => q[0] === xv) || [0, y0])[1]))) * r.width / W, `<b>${xv}</b><br>${lines.join('<br>')}`);
+  });
+  hit.addEventListener('pointerleave', () => { t.hidden = true; cross.setAttribute('visibility', 'hidden'); });
+}
+function divergingBars(id, rows, o) {
+  const host = document.getElementById(id); if (!host) return;
+  host.querySelector('svg')?.remove();
+  const W = Math.max(host.clientWidth, 280), rowH = o.rowH, labW = o.labW, valW = o.valW;
+  const H = rows.length * rowH + 4;
+  const mx = Math.max(...rows.map(r => Math.abs(r.v)));
+  const minV = Math.min(...rows.map(r => r.v)), maxV = Math.max(...rows.map(r => r.v));
+  const plotL = labW + valW, plotR = W - valW;
+  const sc = (plotR - plotL) / (maxV - minV);
+  const zero = plotL + (0 - minV) * sc;
+  const svg = S('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': o.aria });
+  const t = tipFor(host);
+  rows.forEach((r, i) => {
+    const y = i * rowH, bh = Math.min(rowH - 8, 16), by = y + (rowH - bh) / 2, len = Math.max(Math.abs(r.v) * sc, 2);
+    const bx = r.v < 0 ? zero - len : zero;
+    svg.append(S('text', { x: 0, y: y + rowH / 2 + 4, class: 'lab2' }, r.name));
+    svg.append(S('rect', { x: bx, y: by, width: len, height: bh, rx: 3, fill: r.v < 0 ? 'var(--pelle)' : 'var(--blue)' }));
+    svg.append(S('text', { x: r.v < 0 ? bx - 6 : bx + len + 6, y: y + rowH / 2 + 4, 'text-anchor': r.v < 0 ? 'end' : 'start', class: 'tick' }, sgn(r.v, 1)));
+    const h = S('rect', { x: 0, y, width: W, height: rowH, fill: 'transparent', tabindex: 0, 'aria-label': `${r.name}: ${sgn(r.v, 1)} milioni` });
+    const show = () => { const rr = svg.getBoundingClientRect(); placeTip(t, host, (bx + len / 2) * rr.width / W, by * rr.width / W, `<b>${r.name}</b><br>${fmt(r.a, 1)} → ${fmt(r.b, 1)} mln (${sgn(r.v, 1)})`); };
+    h.addEventListener('pointerenter', show); h.addEventListener('focus', show);
+    h.addEventListener('pointerleave', () => t.hidden = true); h.addEventListener('blur', () => t.hidden = true);
+    svg.append(h);
+  });
+  svg.append(S('line', { x1: zero, x2: zero, y1: 0, y2: H, stroke: 'var(--axis)', 'stroke-width': 1 }));
+  host.prepend(svg);
+}
+function legend(id, items) {
+  const el = document.getElementById(id); if (!el) return;
+  el.innerHTML = items.map(([c, n]) => `<span><i style="background:${c}"></i>${n}</span>`).join('');
+}
+function render() {
+  const yrs = D.serie.map(r => r[0]);
+  const at = y => D.serie.find(r => r[0] === y)[1];
+  lineChart('c-serie', [{ name: 'Export', color: 'var(--pelle)', pts: D.serie, endLabel: card ? null : null,
+    segments: [{ from: 1991, to: 2022, color: 'var(--slate)', w: 2 }, { from: 2022, to: 2025, color: 'var(--pelle)', w: 3 }] }], {
+    h: card ? 256 : 300, ymin: 0, ymax: 3000, left: 48, right: 64, xTicks: [1991, 1995, 2000, 2005, 2010, 2015, 2020, 2025], unit: ' mln €', dec: 1, aria: 'Export di Vicenza dal 1991 al 2025',
+    notes: [
+      { x: 2022, y: at(2022), text: `Picco 2022: ${fmt(at(2022))} mln`, color: 'var(--pelle)', anchor: 'end', dx: 6, dy: -12 },
+      { x: 2020, y: at(2020), text: `2020: ${fmt(at(2020))}`, color: 'var(--slate)', anchor: 'end', dx: -6, dy: 22 },
+      { x: 2025, y: at(2025), text: `2025: ${fmt(at(2025))}`, color: 'var(--pelle)', anchor: 'start', dx: -18, dy: 24 },
+    ] });
+  const S2 = [
+    ['Italia, manifatturiero', 'var(--indigo)', 'Italia, manifatturiero'],
+    ['Vicenza, manifatturiero', 'var(--blue)', 'Vicenza, manifatturiero'],
+    ['Italia, concia e pelletteria', 'var(--pelle-2)', 'Italia, pelle'],
+    ['Vicenza, concia e pelletteria', 'var(--pelle)', 'Vicenza, pelle'],
+  ].map(([k, color, short]) => ({ name: k, color, short, pts: D.indice[k], endLabel: fmt(D.indice[k][D.indice[k].length - 1][1], 1) }));
+  legend('l-indice', S2.map(s => [s.color, s.short]));
+  lineChart('c-indice', S2, { h: card ? 262 : 280, ymin: 60, ymax: 110, right: 50, left: 34, nTicks: 5, xTicks: [2015, 2019, 2022, 2025], dec: 1, aria: 'Indice export 2022 uguale 100' });
+  divergingBars('c-paesi', D.paesi, { rowH: card ? 21 : 21.5, labW: card ? 104 : 96, valW: card ? 46 : 42, aria: 'Variazione export per paese' });
+  lineChart('c-kg', [{ name: 'Tonnellate', color: 'var(--blue)', pts: D.concia.map(r => [r[0], r[2]]), segments: [{ from: 1991, to: 2022, color: 'var(--slate)', w: 2 }, { from: 2022, to: 2025, color: 'var(--blue)', w: 3 }] }], {
+    h: 220, ymin: 0, ymax: 480, right: 26, left: 36, xTicks: [1991, 2006, 2025], unit: ' mila t', dec: 1, aria: 'Chili esportati',
+    notes: [{ x: 2006, y: 394.3, text: 'Picco 2006: 394', color: 'var(--slate)', dy: -12 }, { x: 2025, y: 214.5, text: '2025: 214,5', color: 'var(--blue)', anchor: 'end', dx: 4, dy: 22 }] });
+  lineChart('c-prezzo', [{ name: 'Prezzo', color: 'var(--blue)', pts: D.concia.map(r => [r[0], r[3]]), segments: [{ from: 1991, to: 2022, color: 'var(--slate)', w: 2 }, { from: 2022, to: 2025, color: 'var(--blue)', w: 3 }] }], {
+    h: 220, ymin: 0, ymax: 16, right: 26, left: 30, xTicks: [1991, 2006, 2025], unit: ' €/kg', dec: 2, aria: 'Prezzo medio al chilo',
+    notes: [{ x: 2022, y: 12.28, text: '', color: 'var(--slate)' }, { x: 2025, y: 12.64, text: '2022: 12,28 → 2025: 12,64', color: 'var(--blue)', anchor: 'end', dx: 4, dy: -16 }] });
+  const Q = [
+    { name: 'Concia sul totale nazionale di concia e pelletteria', color: 'var(--blue)', short: 'Concia sul totale nazionale di concia e pelletteria', pts: D.quote.map(r => [r[0], r[2]]) },
+    { name: 'Vicenza sull\'export italiano di concia e pelletteria', color: 'var(--pelle)', short: 'Vicenza sull\'export italiano di concia e pelletteria', pts: D.quote.map(r => [r[0], r[1]]) },
+  ].map(s => ({ ...s, endLabel: fmt(s.pts[s.pts.length - 1][1], 1) + '%' }));
+  legend('l-quote', Q.map(s => [s.color, s.short]));
+  lineChart('c-quote', Q, { h: 240, ymin: 0, ymax: 80, right: 56, left: 34, nTicks: 4, xTicks: [1991, 2000, 2010, 2020, 2025], unit: '%', dec: 1, aria: 'Quote percentuali' });
+}
+function table() {
+  const el = document.getElementById('tab');
+  const rows = D.serie.map((r, i) => [r[0], fmt(r[1], 1), fmt(D.concia[i][2], 1), fmt(D.concia[i][3], 2), fmt(D.quote[i][1], 1), fmt(D.quote[i][2], 1)]);
+  el.innerHTML = '<thead><tr><th>Anno</th><th>Vicenza, mln €</th><th>Italia concia, mila t</th><th>Italia concia, €/kg</th><th>Quota Vicenza su Italia, %</th><th>Concia su totale Italia, %</th></tr></thead><tbody>' +
+    rows.map(r => '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>').join('') + '</tbody>';
+}
+table();
+const start = () => render();
+start();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(render);
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(render, 120); });
+</script>
